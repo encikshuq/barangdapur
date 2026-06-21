@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>DapurList Family</title>
+  <meta name="theme-color" content="#16a34a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">DapurList Family</p>
+        <h1 id="pageTitle">Login Keluarga</h1>
+      </div>
+      <button class="icon-btn" id="logoutBtn" hidden>↩</button>
+    </header>
+
+    <main id="view"></main>
+
+    <nav class="bottom-nav" id="bottomNav" hidden>
+      <button data-tab="home" class="active">🏠<span>Home</span></button>
+      <button data-tab="lists">🛒<span>Senarai</span></button>
+      <button data-tab="items">📦<span>Barang</span></button>
+      <button data-tab="receipts">🧾<span>Resit</span></button>
+      <button data-tab="claim">💰<span>Claim</span></button>
+    </nav>
+  </div>
+
+  <template id="tpl-login">
+    <section class="card hero-card">
+      <div class="logo-mark">🛒</div>
+      <h2>Senarai dapur keluarga</h2>
+      <p>Suami, isteri atau anak boleh buat senarai. Sesiapa pun boleh ditugaskan membeli.</p>
+    </section>
+    <section class="card">
+      <label>Kod Keluarga</label>
+      <input id="familyCode" placeholder="Contoh: SHUQ2026" value="SHUQ2026" />
+      <label>Nama Profil</label>
+      <input id="memberName" placeholder="Contoh: Ayah / Ibu" value="Ayah" />
+      <label>PIN</label>
+      <input id="pin" type="password" placeholder="123456" value="123456" />
+      <button class="primary" id="loginBtn">Masuk App</button>
+      <p class="hint">Demo: guna kod SHUQ2026 dan PIN 123456. Untuk sync real, isi Supabase URL & anon key dalam js/config.js.</p>
+    </section>
+  </template>
+
+  <template id="tpl-home">
+    <section class="grid-2">
+      <div class="stat-card"><b id="statOpen">0</b><span>Senarai aktif</span></div>
+      <div class="stat-card"><b id="statClaim">RM0</b><span>Belum claim</span></div>
+    </section>
+    <section class="card action-card">
+      <h2>Buat senarai baru</h2>
+      <p>Pilih barang dapur, assign pembeli dan hantar.</p>
+      <button class="primary" data-action="new-list">+ Senarai Baru</button>
+    </section>
+    <section class="section-head"><h3>Senarai Terkini</h3></section>
+    <div id="recentLists"></div>
+  </template>
+
+  <template id="tpl-lists">
+    <section class="card">
+      <label>Tajuk Senarai</label>
+      <input id="listTitle" value="Belian Dapur Hari Ini" />
+      <label>Dibuat oleh</label>
+      <select id="createdBy"><option>Ayah</option><option>Ibu</option><option>Anak</option></select>
+      <label>Pembeli</label>
+      <select id="assignedTo"><option>Ibu</option><option>Ayah</option><option>Anak</option></select>
+      <label>Nota</label>
+      <textarea id="listNote" placeholder="Contoh: kalau tiada jenama ini, boleh ambil jenama lain"></textarea>
+    </section>
+    <section class="search-wrap">
+      <input id="itemSearch" placeholder="Cari barang: ayam, kicap, tepung..." />
+      <button class="secondary" id="addCustomBtn">+ Tambah</button>
+    </section>
+    <div id="categoryTabs" class="chips"></div>
+    <div id="itemPicker"></div>
+    <button class="floating-primary" id="sendListBtn">Hantar Senarai</button>
+  </template>
+
+  <template id="tpl-list-detail">
+    <section class="card">
+      <div class="between"><div><h2 id="detailTitle"></h2><p id="detailMeta"></p></div><span class="pill" id="detailStatus"></span></div>
+    </section>
+    <div id="detailItems"></div>
+    <section class="card">
+      <label>Jumlah belian (RM)</label>
+      <input id="receiptTotal" type="number" step="0.01" placeholder="0.00" />
+      <label>Upload / ambil gambar resit</label>
+      <input id="receiptFile" type="file" accept="image/*,.pdf" capture="environment" />
+      <button class="primary" id="completeListBtn">Selesai & Simpan Resit</button>
+    </section>
+  </template>
+
+  <template id="tpl-items">
+    <section class="card">
+      <h2>Master Barang</h2>
+      <p>Tambah, edit, delete atau nonaktifkan barang dapur.</p>
+      <div class="row"><input id="masterName" placeholder="Nama barang"/><select id="masterCategory"></select></div>
+      <button class="primary" id="addMasterBtn">+ Tambah Barang</button>
+    </section>
+    <div id="masterList"></div>
+  </template>
+
+  <template id="tpl-receipts">
+    <section class="section-head"><h3>Sejarah Resit</h3></section>
+    <div id="receiptList"></div>
+  </template>
+
+  <template id="tpl-claim">
+    <section class="section-head"><h3>Claim Duit</h3></section>
+    <div id="claimList"></div>
+  </template>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
